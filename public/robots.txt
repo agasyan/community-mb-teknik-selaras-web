@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mb-teknik-selaras.pages.dev/sitemap-index.xml

@@ -1,0 +1,5 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mb-teknik-selaras",
+  "pages_build_output_dir": "./dist"
+}

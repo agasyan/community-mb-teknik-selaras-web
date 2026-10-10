@@ -1,0 +1,63 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+const spans: Record<string, string> = {
+  'cuci-ac': 'md:col-span-4',
+  'servis-ac': 'md:col-span-8',
+  'pasang-baru': 'md:col-span-6',
+  'bongkar-pasang': 'md:col-span-6',
+};
+---
+
+<section id="layanan" class="scroll-mt-20 border-t border-base-300 bg-base-100 py-12 md:py-16">
+  <div class="mx-auto w-full max-w-5xl px-4">
+    <h2 class="text-2xl font-bold sm:text-3xl">Empat layanan inti</h2>
+    <p class="mt-2 max-w-[60ch] text-base-content/70">
+      Kami periksa dan jelaskan temuan lebih dulu, lalu kerjakan setelah Anda setuju.
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-12">
+      {
+        site.services.map((service) => (
+          <article
+            class={`card border bg-base-200 ${spans[service.id]} ${
+              service.featured ? 'border-primary/40 bg-[var(--primary-soft)]' : 'border-base-300'
+            }`}
+          >
+            <div class="card-body gap-3">
+              <div class="flex items-center gap-3">
+                <span
+                  class={`grid size-11 shrink-0 place-items-center rounded-xl ${
+                    service.featured
+                      ? 'bg-primary text-primary-content'
+                      : 'bg-base-100 text-primary'
+                  }`}
+                >
+                  <Icon name={service.icon} class="size-6" />
+                </span>
+                <h3 class="text-lg font-semibold">{service.title}</h3>
+                {service.featured && (
+                  <span class="badge ml-auto border-none bg-primary font-semibold text-primary-content">
+                    TERFAVORIT
+                  </span>
+                )}
+              </div>
+
+              <p class="text-sm text-base-content/70">{service.tagline}</p>
+
+              <ul class="mt-1 grid gap-2 text-sm">
+                {service.points.map((point) => (
+                  <li class="flex gap-2">
+                    <Icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-primary" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

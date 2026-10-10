@@ -1,0 +1,20 @@
+---
+import { site, waLink } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-50 border-t border-base-300 bg-base-100/95 backdrop-blur md:hidden"
+>
+  <div class="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2">
+    <a
+      href={waLink('Halo MB Teknik Selaras, saya ingin bertanya soal layanan AC.')}
+      class="btn btn-success min-h-11 flex-1"
+      target="_blank"
+      rel="noopener"
+    >
+      <Icon name="brand-whatsapp" class="size-5" />
+      WhatsApp {site.whatsapp.display}
+    </a>
+  </div>
+</div>

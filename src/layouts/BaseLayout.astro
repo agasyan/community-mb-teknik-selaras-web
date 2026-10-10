@@ -1,0 +1,156 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Service, Cuci & Pasang AC Cileungsi - Jonggol | MB Teknik',
+  description = site.description,
+} = Astro.props;
+
+const base = (Astro.site ?? new URL(site.url)).href.replace(/\/$/, '');
+const canonical = `${base}/`;
+const ogImage = `${base}/og-image.png`;
+const logo = `${base}/images/logo-mark.png`;
+const tel = `+${site.whatsapp.e164}`;
+
+const areaServed = [
+  'Cileungsi',
+  'Jonggol',
+  'Narogong',
+  'Gandoang',
+  'Limus Nunggal',
+  'Klapanunggal',
+  'Kota Wisata Cibubur',
+  'Limus Pratama Regency',
+  'Pesona Kahuripan 10',
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${base}/#organization`,
+      name: site.name,
+      url: base,
+      logo,
+      foundingDate: '2019',
+      telephone: tel,
+      founder: { '@type': 'Person', name: site.owner },
+      sameAs: [site.locations[1].routeUrl],
+    },
+    {
+      '@type': 'HVACBusiness',
+      '@id': `${base}/#business`,
+      name: site.name,
+      url: base,
+      image: ogImage,
+      telephone: tel,
+      priceRange: '$$',
+      currenciesAccepted: 'IDR',
+      paymentAccepted: 'Cash, Transfer Bank, QRIS',
+      parentOrganization: { '@id': `${base}/#organization` },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: [...site.hours.days],
+          opens: site.hours.opens,
+          closes: site.hours.closes,
+        },
+      ],
+      areaServed: areaServed.map((name) => ({
+        '@type': 'AdministrativeArea',
+        name,
+      })),
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Layanan AC MB Teknik Selaras',
+        itemListElement: site.services.map((service) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: service.title },
+        })),
+      },
+      location: site.locations.map((location) => ({
+        '@type': 'Place',
+        name: `${location.name} (${location.branch})`,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: location.streetAddress,
+          addressLocality: site.region.locality,
+          addressRegion: site.region.region,
+          postalCode: site.region.postalCode,
+          addressCountry: site.region.country,
+        },
+        hasMap: location.routeUrl,
+      })),
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="id" data-theme="mb-light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta name="geo.region" content="ID-JB" />
+    <meta name="geo.placename" content="Cileungsi, Kabupaten Bogor" />
+    <meta name="geo.position" content={`${site.geo.lat};${site.geo.lng}`} />
+    <meta name="ICBM" content={`${site.geo.lat}, ${site.geo.lng}`} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#f8f9fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121417" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={site.ogTitle} />
+    <meta property="og:description" content={site.ogDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={site.ogTitle} />
+    <meta name="twitter:description" content={site.ogDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'mb-light' && t !== 'mb-dark') {
+            t = matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'mb-dark'
+              : 'mb-light';
+          }
+          var el = document.documentElement;
+          el.dataset.theme = t;
+          el.style.colorScheme = t === 'mb-dark' ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

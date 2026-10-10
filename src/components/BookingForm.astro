@@ -1,0 +1,123 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+const services = ['Cuci AC', 'Servis AC', 'Pasang Baru', 'Bongkar Pasang'];
+const units = ['1 unit', '2 unit', '3 unit', '4 unit', '5 unit atau lebih'];
+const areas = [
+  'Pesona Kahuripan 10 & sekitar',
+  'Limus Pratama & Narogong',
+  'Kota Wisata & sekitar',
+  'Cileungsi / Jonggol lainnya',
+];
+---
+
+<section id="pesan" class="scroll-mt-20 border-t border-base-300 bg-base-100 py-12 md:py-16">
+  <div class="mx-auto w-full max-w-3xl px-4">
+    <h2 class="text-2xl font-bold sm:text-3xl">Pesan lewat WhatsApp</h2>
+    <p class="mt-2 max-w-[60ch] text-base-content/70">
+      Isi data singkat berikut, lalu tombol akan membuka WhatsApp dengan pesan yang
+      sudah tersusun. Tidak ada data yang dikirim ke server.
+    </p>
+
+    <form id="booking-form" class="mt-8 grid gap-4 md:grid-cols-2" novalidate>
+      <label class="grid gap-1.5">
+        <span class="text-sm font-medium">Nama (opsional)</span>
+        <input
+          class="input w-full"
+          type="text"
+          name="name"
+          autocomplete="name"
+          placeholder="Nama Anda"
+        />
+      </label>
+
+      <label class="grid gap-1.5">
+        <span class="text-sm font-medium">Layanan</span>
+        <select class="select w-full" name="service" required>
+          <option value="">Pilih layanan</option>
+          {services.map((service) => <option value={service}>{service}</option>)}
+        </select>
+      </label>
+
+      <label class="grid gap-1.5">
+        <span class="text-sm font-medium">Jumlah unit AC</span>
+        <select class="select w-full" name="units">
+          {units.map((unit) => <option value={unit}>{unit}</option>)}
+        </select>
+      </label>
+
+      <label class="grid gap-1.5">
+        <span class="text-sm font-medium">Area</span>
+        <select class="select w-full" name="area" required>
+          <option value="">Pilih area</option>
+          {areas.map((area) => <option value={area}>{area}</option>)}
+        </select>
+      </label>
+
+      <label class="grid gap-1.5 md:col-span-2">
+        <span class="text-sm font-medium">Keluhan atau catatan (opsional)</span>
+        <textarea
+          class="textarea w-full"
+          name="notes"
+          rows="3"
+          placeholder="Contoh: AC kamar tidak dingin sejak seminggu, keluar angin saja."
+        ></textarea>
+      </label>
+
+      <p
+        id="booking-error"
+        class="hidden items-center gap-1.5 text-sm text-error md:col-span-2"
+        role="alert"
+        aria-live="polite"
+      >
+        <Icon name="alert-circle" class="size-4" />
+        <span>Mohon pilih layanan dan area lebih dulu.</span>
+      </p>
+
+      <div class="md:col-span-2">
+        <button type="submit" class="btn btn-success min-h-11 w-full sm:w-auto">
+          <Icon name="send" class="size-5" />
+          Kirim pesan ke WhatsApp {site.whatsapp.display}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script define:vars={{ waNumber: site.whatsapp.e164 }}>
+  const form = document.getElementById('booking-form');
+  const errorBox = document.getElementById('booking-error');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const service = String(data.get('service') || '');
+    const area = String(data.get('area') || '');
+
+    if (!service || !area) {
+      errorBox?.classList.remove('hidden');
+      errorBox?.classList.add('flex');
+      return;
+    }
+
+    errorBox?.classList.add('hidden');
+    errorBox?.classList.remove('flex');
+
+    const name = String(data.get('name') || '').trim();
+    const units = String(data.get('units') || '');
+    const notes = String(data.get('notes') || '').trim();
+
+    const lines = [
+      'Halo MB Teknik Selaras, saya ingin pesan layanan AC.',
+      `Nama: ${name || '-'}`,
+      `Layanan: ${service}`,
+      `Jumlah unit: ${units}`,
+      `Area: ${area}`,
+    ];
+    if (notes) lines.push(`Keluhan: ${notes}`);
+
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+    window.open(url, '_blank', 'noopener');
+  });
+</script>

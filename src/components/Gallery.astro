@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../data/site';
+import flushing from '../assets/gallery/flushing-ac-cassette.png';
+import las from '../assets/gallery/las-pipa-outdoor.png';
+import tinggi from '../assets/gallery/servis-outdoor-ketinggian.png';
+import ampere from '../assets/gallery/pengukuran-ampere-freon.png';
+import bengkel from '../assets/gallery/bengkel-reparasi-kondensor.png';
+
+const images: Record<string, ImageMetadata> = {
+  'flushing-ac-cassette': flushing,
+  'las-pipa-outdoor': las,
+  'servis-outdoor-ketinggian': tinggi,
+  'pengukuran-ampere-freon': ampere,
+  'bengkel-reparasi-kondensor': bengkel,
+};
+---
+
+<section id="galeri" class="scroll-mt-20 border-t border-base-300 py-12 md:py-16">
+  <div class="mx-auto w-full max-w-5xl px-4">
+    <h2 class="text-2xl font-bold sm:text-3xl">Dokumentasi pengerjaan asli</h2>
+    <p class="mt-2 max-w-[60ch] text-base-content/70">
+      Foto lapangan dari pekerjaan teknisi kami, bukan ilustrasi.
+    </p>
+
+    <div class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        site.gallery.map((item, index) => (
+          <figure
+            class={`overflow-hidden rounded-xl border border-base-300 bg-base-100 ${
+              index === 0 ? 'sm:col-span-2 lg:row-span-2' : ''
+            }`}
+          >
+            <Image
+              src={images[item.file]}
+              alt={item.alt}
+              widths={[360, 640, 900]}
+              sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+              loading="lazy"
+              decoding="async"
+              class={`w-full object-cover ${index === 0 ? 'aspect-[16/10] lg:h-[calc(100%-2.75rem)]' : 'aspect-[4/3]'}`}
+            />
+            <figcaption class="px-3 py-2 text-xs text-base-content/75">
+              {item.caption}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

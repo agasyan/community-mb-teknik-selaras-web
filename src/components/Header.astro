@@ -1,0 +1,69 @@
+---
+import { site, waLink } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<header class="sticky top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur">
+  <div class="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-3">
+    <a href="/" class="flex items-center gap-2.5">
+      <img
+        src="/images/logo-mark.png"
+        alt="Logo MB Teknik Selaras"
+        width="44"
+        height="44"
+        class="h-11 w-11 object-contain"
+      />
+      <span class="hidden text-[15px] font-semibold leading-tight sm:block">
+        MB Teknik Selaras
+        <span class="block text-xs font-normal text-base-content/60">
+          Service AC panggilan Cileungsi &amp; Jonggol
+        </span>
+      </span>
+    </a>
+
+    <span class="ml-auto hidden items-center gap-1.5 text-xs text-base-content/70 lg:flex">
+      <Icon name="clock" class="size-4 text-primary" />
+      {site.hours.label}
+    </span>
+
+    <div class="ml-auto flex items-center gap-1.5 lg:ml-3">
+      <button
+        type="button"
+        class="theme-toggle btn btn-ghost btn-circle btn-sm"
+        aria-label="Ganti mode terang atau gelap"
+        data-theme-toggle
+      >
+        <Icon name="moon" class="icon-moon size-5" />
+        <Icon name="sun" class="icon-sun size-5" />
+      </button>
+
+      <a
+        href={waLink('Halo MB Teknik Selaras, saya ingin bertanya soal layanan AC.')}
+        class="btn btn-success btn-sm min-h-9"
+        target="_blank"
+        rel="noopener"
+      >
+        <Icon name="brand-whatsapp" class="size-4" />
+        <span class="hidden sm:inline">{site.whatsapp.full}</span>
+        <span class="sm:hidden">WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggles = document.querySelectorAll<HTMLElement>('[data-theme-toggle]');
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const el = document.documentElement;
+      const next = el.dataset.theme === 'mb-dark' ? 'mb-light' : 'mb-dark';
+      el.dataset.theme = next;
+      el.style.colorScheme = next === 'mb-dark' ? 'dark' : 'light';
+      try {
+        localStorage.setItem('theme', next);
+      } catch (error) {
+        // localStorage can be unavailable, ignore.
+      }
+    });
+  });
+</script>

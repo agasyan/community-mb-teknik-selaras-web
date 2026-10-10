@@ -1,0 +1,21 @@
+{
+  "name": "MB Teknik Selaras",
+  "short_name": "MB Teknik",
+  "description": "Jasa cuci, servis, dan pasang AC panggilan di Cileungsi, Jonggol, dan Narogong.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#121417",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

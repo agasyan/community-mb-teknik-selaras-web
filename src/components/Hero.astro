@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import { site, waLink } from '../data/site';
+import Icon from './Icon.astro';
+import heroImage from '../assets/gallery/servis-outdoor-ketinggian.png';
+
+const stats = [
+  { value: '2019', label: 'Melayani sejak' },
+  { value: '2', label: 'Bengkel fisik' },
+  { value: '4', label: 'Layanan inti' },
+];
+---
+
+<section class="relative overflow-hidden">
+  <div
+    class="mx-auto grid w-full max-w-5xl items-center gap-8 px-4 py-10 md:grid-cols-12 md:gap-10 md:py-16"
+  >
+    <div class="md:col-span-7">
+      <p
+        class="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-1 text-xs font-medium text-base-content/80"
+      >
+        <Icon name="shield-check" class="size-4 text-primary" />
+        Dipercaya ratusan pelanggan di Cileungsi, Jonggol, dan sekitarnya
+      </p>
+
+      <h1 class="mt-4 text-[1.75rem] font-bold leading-tight sm:text-4xl">
+        Jasa Cuci, Servis &amp; Pasang AC Panggilan <span class="text-primary"
+          >Bergaransi</span
+        >
+      </h1>
+
+      <p class="mt-4 max-w-[60ch] text-base text-base-content/75">
+        Teknisi MB Teknik Selaras datang langsung ke rumah, toko, atau kantor Anda
+        di Cileungsi, Jonggol, Kota Wisata, Limus Pratama, dan Pesona Kahuripan 10.
+        Pengerjaan rapi, jujur, dan bergaransi.
+      </p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <a
+          href={waLink(
+            'Halo MB Teknik Selaras, saya ingin bertanya soal layanan AC.',
+          )}
+          class="btn btn-success min-h-11"
+          target="_blank"
+          rel="noopener"
+        >
+          <Icon name="brand-whatsapp" class="size-5" />
+          Chat WhatsApp {site.whatsapp.display}
+        </a>
+        <a href="#layanan" class="btn btn-outline min-h-11">Lihat Layanan &amp; Alamat</a>
+      </div>
+
+      <dl class="mt-8 grid max-w-md grid-cols-3 gap-4">
+        {
+          stats.map((stat) => (
+            <div>
+              <dt class="sr-only">{stat.label}</dt>
+              <dd class="font-mono text-2xl font-semibold text-primary">{stat.value}</dd>
+              <dd class="text-xs text-base-content/70">{stat.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="md:col-span-5">
+      <figure class="overflow-hidden rounded-2xl border border-base-300 bg-base-100">
+        <Image
+          src={heroImage}
+          alt="Teknisi MB Teknik Selaras servis unit outdoor AC di posisi dak"
+          widths={[420, 640, 900]}
+          sizes="(max-width: 767px) 100vw, 40vw"
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-[4/3] w-full object-cover"
+        />
+        <figcaption class="border-t border-base-300 px-3 py-2 text-xs text-base-content/70">
+          Servis unit outdoor di posisi dak, Cileungsi.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

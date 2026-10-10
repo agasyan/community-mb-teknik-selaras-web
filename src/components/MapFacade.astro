@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  src: string;
+  title: string;
+  label: string;
+  place: string;
+  routeUrl: string;
+}
+
+const { src, title, label, place, routeUrl } = Astro.props;
+---
+
+<div
+  class="map-facade relative overflow-hidden rounded-xl border border-base-300 bg-base-200"
+  data-src={src}
+  data-title={title}
+>
+  <div
+    class="map-facade__bg flex aspect-[16/10] flex-col items-center justify-center gap-3 px-4 text-center"
+  >
+    <span class="badge border-none bg-base-100 text-base-content/70">{label}</span>
+    <Icon name="map-pin" class="size-8 text-primary" />
+    <p class="max-w-[28ch] text-sm font-medium">{place}</p>
+    <button type="button" class="btn btn-outline btn-sm" data-map-load>
+      Tampilkan peta interaktif
+    </button>
+    <a
+      href={routeUrl}
+      class="link text-xs text-base-content/70"
+      target="_blank"
+      rel="noopener"
+    >
+      Buka rute di aplikasi Google Maps
+    </a>
+  </div>
+</div>
+
+<style>
+  .map-facade__bg {
+    background-image:
+      linear-gradient(var(--color-base-300) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-base-300) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+</style>

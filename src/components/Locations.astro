@@ -1,0 +1,94 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import MapFacade from './MapFacade.astro';
+---
+
+<section id="lokasi" class="scroll-mt-20 border-t border-base-300 bg-base-100 py-12 md:py-16">
+  <div class="mx-auto w-full max-w-5xl px-4">
+    <h2 class="text-2xl font-bold sm:text-3xl">Dua bengkel resmi &amp; area layanan</h2>
+
+    <div
+      class="mt-4 flex gap-3 rounded-xl border border-primary/30 bg-[var(--primary-soft)] p-4 text-sm"
+    >
+      <Icon name="building-store" class="mt-0.5 size-5 shrink-0 text-primary" />
+      <p>
+        Kami punya dua bengkel fisik resmi di Cileungsi. Karena teknisi setiap hari
+        mengerjakan unit langsung di rumah pelanggan, bengkel jarang dijaga
+        seharian. Hubungi WhatsApp lebih dulu untuk membuat jadwal.
+      </p>
+    </div>
+
+    <div class="mt-6 grid gap-4 md:grid-cols-2">
+      {
+        site.locations.map((location) => (
+          <div class="flex flex-col gap-3 rounded-xl border border-base-300 bg-base-200 p-4">
+            <div class="flex items-center gap-2">
+              <span class="badge border-none bg-primary text-primary-content">
+                {location.branch}
+              </span>
+              <span class="text-xs text-base-content/60">{location.label}</span>
+            </div>
+            <h3 class="text-base font-semibold">{location.name}</h3>
+            <p class="flex gap-2 text-sm text-base-content/75">
+              <Icon name="map-pin" class="mt-0.5 size-4 shrink-0 text-primary" />
+              <span>{location.address}</span>
+            </p>
+
+            <MapFacade
+              src={location.mapEmbed}
+              title={`Peta ${location.name}`}
+              label={location.label}
+              place={location.shortName}
+              routeUrl={location.routeUrl}
+            />
+
+            <a
+              href={location.routeUrl}
+              class="btn btn-outline btn-sm mt-auto"
+              target="_blank"
+              rel="noopener"
+            >
+              <Icon name="route" class="size-4" />
+              Buka rute {location.shortName}
+            </a>
+          </div>
+        ))
+      }
+    </div>
+
+    <h3 class="mt-10 text-lg font-semibold">Area jangkauan prioritas</h3>
+    <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+      {
+        site.areas.map((area) => (
+          <li class="flex items-start gap-2 rounded-lg border border-base-300 bg-base-100 p-3 text-sm">
+            <Icon name="circle-check" class="mt-0.5 size-4 shrink-0 text-primary" />
+            <span>
+              {area.name}
+              {area.note && <span class="text-base-content/60"> - {area.note}</span>}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.map-facade').forEach((facade) => {
+    const button = facade.querySelector('[data-map-load]');
+    if (!button) return;
+
+    button.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = facade.getAttribute('data-src') || '';
+      iframe.title = facade.getAttribute('data-title') || 'Peta lokasi';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.setAttribute('style', 'border:0');
+      iframe.setAttribute('allowfullscreen', 'true');
+      iframe.className = 'aspect-[16/10] w-full';
+      facade.replaceChildren(iframe);
+    });
+  });
+</script>

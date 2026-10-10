@@ -1,0 +1,33 @@
+{
+  "name": "mb-teknik-selaras-web",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "assets": "node scripts/generate-assets.mjs",
+    "deploy": "npm run build && wrangler pages deploy --branch main",
+    "deploy:init": "(wrangler pages project create mb-teknik-selaras --production-branch main || true) && npm run deploy"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@fontsource-variable/outfit": "^5.3.0",
+    "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/sitemap": "^3.7.4",
+    "@tabler/icons": "^3.49.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "daisyui": "^5.7.47",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.149.0"
+  }
+}
